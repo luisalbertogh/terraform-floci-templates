@@ -1,0 +1,22 @@
+{
+  "000000000000/mark-management-role" : {
+    "roleId" : "AROAGTSURVSBB7BKGOQC",
+    "roleName" : "mark-management-role",
+    "path" : "/",
+    "arn" : "arn:aws:iam::000000000000:role/mark-management-role",
+    "assumeRolePolicyDocument" : "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+    "description" : null,
+    "maxSessionDuration" : 3600,
+    "createDate" : "2026-05-21T17:20:07.874502196Z",
+    "tags" : {
+      "Project" : "terraform-sandbox",
+      "Environment" : "dev",
+      "ManagedBy" : "terraform"
+    },
+    "attachedPolicyArns" : [ "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" ],
+    "inlinePolicies" : {
+      "mark-management-dynamodb-access" : "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"dynamodb:Scan\",\"dynamodb:PutItem\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:dynamodb:eu-west-1:000000000000:table/marks-table\"}]}"
+    },
+    "permissionsBoundaryArn" : null
+  }
+}

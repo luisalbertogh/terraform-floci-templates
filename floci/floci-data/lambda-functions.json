@@ -1,0 +1,61 @@
+{
+  "000000000000/lambda::eu-west-1::mark-management::$LATEST" : {
+    "functionName" : "mark-management",
+    "functionArn" : "arn:aws:lambda:eu-west-1:000000000000:function:mark-management",
+    "accountId" : "000000000000",
+    "runtime" : "python3.12",
+    "role" : "arn:aws:iam::000000000000:role/mark-management-role",
+    "handler" : "handler.lambda_handler",
+    "description" : "",
+    "timeout" : 30,
+    "memorySize" : 128,
+    "state" : "Active",
+    "stateReason" : null,
+    "stateReasonCode" : null,
+    "codeSizeBytes" : 1016,
+    "packageType" : "Zip",
+    "imageUri" : null,
+    "imageConfigCommand" : null,
+    "imageConfigEntryPoint" : null,
+    "imageConfigWorkingDirectory" : null,
+    "codeLocalPath" : "/app/data/lambda-code/mark-management",
+    "s3Bucket" : null,
+    "s3Key" : null,
+    "environment" : {
+      "DYNAMODB_TABLE_NAME" : "marks-table"
+    },
+    "tags" : {
+      "Environment" : "dev",
+      "ManagedBy" : "terraform",
+      "Project" : "terraform-sandbox"
+    },
+    "policies" : [ {
+      "Sid" : "AllowAPIGatewayInvoke",
+      "Effect" : "Allow",
+      "Principal" : {
+        "Service" : "apigateway.amazonaws.com"
+      },
+      "Action" : "lambda:InvokeFunction",
+      "Resource" : "arn:aws:lambda:eu-west-1:000000000000:function:mark-management",
+      "Condition" : {
+        "ArnLike" : {
+          "AWS:SourceArn" : "arn:aws:execute-api:eu-west-1::a5a7f3c43e/*/*"
+        }
+      }
+    } ],
+    "lastModified" : 1779384854938,
+    "revisionId" : "ef084f1d-27bd-4aab-9b06-b6d55c892d47",
+    "version" : "$LATEST",
+    "urlConfig" : null,
+    "reservedConcurrentExecutions" : null,
+    "architectures" : null,
+    "ephemeralStorageSize" : 512,
+    "tracingMode" : "PassThrough",
+    "deadLetterTargetArn" : null,
+    "layers" : [ ],
+    "kmsKeyArn" : null,
+    "vpcConfig" : null,
+    "codeSha256" : "DRBffdXCM75W1eY/Yz4xQqSIiQgja9VqWY8lwqypqKE=",
+    "hotReloadHostPath" : null
+  }
+}

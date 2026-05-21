@@ -1,0 +1,24 @@
+{
+  "000000000000/eu-west-1::/aws/lambda/mark-management" : {
+    "logGroupName" : "/aws/lambda/mark-management",
+    "createdTime" : 1779384682751,
+    "retentionInDays" : null,
+    "tags" : { }
+  },
+  "000000000000/eu-west-1::/aws/lambda/hello-world" : {
+    "logGroupName" : "/aws/lambda/hello-world",
+    "createdTime" : 1779382713969,
+    "retentionInDays" : null,
+    "tags" : { }
+  },
+  "000000000000/eu-west-1::/terraform-sandbox/demo-log-group" : {
+    "logGroupName" : "/terraform-sandbox/demo-log-group",
+    "createdTime" : 1779382637612,
+    "retentionInDays" : 14,
+    "tags" : {
+      "Project" : "terraform-sandbox",
+      "Environment" : "dev",
+      "ManagedBy" : "terraform"
+    }
+  }
+}

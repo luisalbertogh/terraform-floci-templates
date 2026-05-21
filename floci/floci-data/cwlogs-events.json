@@ -1,0 +1,26 @@
+{
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]649df0f8::001779384709218::e8352f1f-9e9e-4a8f-91d0-fccbc1b2367d" : {
+    "eventId" : "e8352f1f-9e9e-4a8f-91d0-fccbc1b2367d",
+    "timestamp" : 1779384709218,
+    "message" : "es/botocore/retryhandler.py\", line 207, in __call__\r    if self._checker(**checker_kwargs):\r  File \"/var/lang/lib/python3.12/site-packages/botocore/retryhandler.py\", line 284, in __call__\r    should_retry = self._should_retry(\r  File \"/var/lang/lib/python3.12/site-packages/botocore/retryhandler.py\", line 320, in _should_retry\r    return self._checker(attempt_number, response, caught_exception)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/retryhandler.py\", line 363, in __call__\r    checker_response = checker(\r  File \"/var/lang/lib/python3.12/site-packages/botocore/retryhandler.py\", line 247, in __call__\r    return self._check_caught_exception(\r  File \"/var/lang/lib/python3.12/site-packages/botocore/retryhandler.py\", line 416, in _check_caught_exception\r    raise caught_exception\r  File \"/var/lang/lib/python3.12/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\r    http_response = self._send(request)\r  File \"/var/lang/lib/python3.12/site-pack",
+    "ingestionTime" : 1779384709218
+  },
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]649df0f8::001779384709215::d5ed8fa1-fc28-45dc-bdbc-7791f15d1c58" : {
+    "eventId" : "d5ed8fa1-fc28-45dc-bdbc-7791f15d1c58",
+    "timestamp" : 1779384709215,
+    "message" : "[ERROR] EndpointConnectionError: Could not connect to the endpoint URL: \"http://localhost:4566/\"\rTraceback (most recent call last):\r  File \"/var/task/handler.py\", line 37, in lambda_handler\r    result = table.scan()\r  File \"/var/lang/lib/python3.12/site-packages/boto3/resources/factory.py\", line 581, in do_action\r    response = action(self, *args, **kwargs)\r  File \"/var/lang/lib/python3.12/site-packages/boto3/resources/action.py\", line 88, in __call__\r    response = getattr(parent.meta.client, operation_name)(*args, **params)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/client.py\", line 602, in _api_call\r    return self._make_api_call(operation_name, kwargs)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/context.py\", line 123, in wrapper\r    return func(*args, **kwargs)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/client.py\", line 1060, in _make_api_call\r    http, parsed_response = self._make_request(\r  File \"/var/lang/lib/python3.12/site-pa",
+    "ingestionTime" : 1779384709217
+  },
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]649df0f8::001779384709217::5f0c4b34-d81f-4822-b85f-5627e3e512d0" : {
+    "eventId" : "5f0c4b34-d81f-4822-b85f-5627e3e512d0",
+    "timestamp" : 1779384709217,
+    "message" : "ckages/botocore/client.py\", line 1084, in _make_request\r    return self._endpoint.make_request(operation_model, request_dict)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/endpoint.py\", line 119, in make_request\r    return self._send_request(request_dict, operation_model)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/endpoint.py\", line 200, in _send_request\r    while self._needs_retry(\r  File \"/var/lang/lib/python3.12/site-packages/botocore/endpoint.py\", line 360, in _needs_retry\r    responses = self._event_emitter.emit(\r  File \"/var/lang/lib/python3.12/site-packages/botocore/hooks.py\", line 412, in emit\r    return self._emitter.emit(aliased_event_name, **kwargs)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/hooks.py\", line 256, in emit\r    return self._emit(event_name, kwargs)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/hooks.py\", line 239, in _emit\r    response = handler(**kwargs)\r  File \"/var/lang/lib/python3.12/site-packag",
+    "ingestionTime" : 1779384709217
+  },
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]649df0f8::001779384709218::5e99e621-80a8-4d64-84ba-0f99c26cf3c6" : {
+    "eventId" : "5e99e621-80a8-4d64-84ba-0f99c26cf3c6",
+    "timestamp" : 1779384709218,
+    "message" : "ages/botocore/endpoint.py\", line 383, in _send\r    return self.http_session.send(request)\r  File \"/var/lang/lib/python3.12/site-packages/botocore/httpsession.py\", line 493, in send\r    raise EndpointConnectionError(endpoint_url=request.url, error=e)",
+    "ingestionTime" : 1779384709218
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "000000000000/eu-west-1::/aws/lambda/hello-world::2026/05/21/[$LATEST]a6557262" : {
+    "logGroupName" : "/aws/lambda/hello-world",
+    "logStreamName" : "2026/05/21/[$LATEST]a6557262",
+    "createdTime" : 1779382713969,
+    "firstEventTimestamp" : null,
+    "lastEventTimestamp" : null,
+    "lastIngestionTime" : 0,
+    "uploadSequenceToken" : "333d3498-3c9c-4c1e-a390-cc668abf91be",
+    "storedBytes" : 0
+  },
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]649df0f8" : {
+    "logGroupName" : "/aws/lambda/mark-management",
+    "logStreamName" : "2026/05/21/[$LATEST]649df0f8",
+    "createdTime" : 1779384682751,
+    "firstEventTimestamp" : 1779384709215,
+    "lastEventTimestamp" : 1779384709218,
+    "lastIngestionTime" : 1779384709218,
+    "uploadSequenceToken" : "fbfc6c45-baeb-4d00-863c-76972b8df7ba",
+    "storedBytes" : 3435
+  },
+  "000000000000/eu-west-1::/aws/lambda/mark-management::2026/05/21/[$LATEST]8388d1c4" : {
+    "logGroupName" : "/aws/lambda/mark-management",
+    "logStreamName" : "2026/05/21/[$LATEST]8388d1c4",
+    "createdTime" : 1779384879453,
+    "firstEventTimestamp" : null,
+    "lastEventTimestamp" : null,
+    "lastIngestionTime" : 0,
+    "uploadSequenceToken" : "357a4389-eac9-4b8e-89a8-7ce8ecdf4437",
+    "storedBytes" : 0
+  }
+}

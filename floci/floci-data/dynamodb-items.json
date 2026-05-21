@@ -1,0 +1,26 @@
+{
+  "000000000000/eu-west-1::marks-table" : {
+    "Systems#Luis" : {
+      "Class" : {
+        "S" : "Systems"
+      },
+      "Name" : {
+        "S" : "Luis"
+      },
+      "Mark" : {
+        "S" : "7"
+      }
+    },
+    "Systems#Pedro" : {
+      "Class" : {
+        "S" : "Systems"
+      },
+      "Name" : {
+        "S" : "Pedro"
+      },
+      "Mark" : {
+        "S" : "8"
+      }
+    }
+  }
+}
