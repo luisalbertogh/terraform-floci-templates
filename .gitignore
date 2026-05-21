@@ -44,4 +44,4 @@ terraform.rc
 # planout
 
 # Floci data
-#**/floci
+**/floci-data
