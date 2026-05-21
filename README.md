@@ -9,4 +9,6 @@ Terraform sample projects for AWS on Floci, implementing baselines for common AW
 - [APIGW](./templates/APIGW/) - API REST architecture with API Gateway, Lambda functions and DynamoDB tables.
 - [ECS](./templates/ECS/) - Containers architecture on ECS with ECR.
 
+## How to use the templates
 
+[TODO]
