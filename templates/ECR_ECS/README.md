@@ -42,13 +42,13 @@ ECR_ECS/
 terraform init
 ```
 
-1. Format the configuration to keep a consistent style:
+2. Format the configuration to keep a consistent style:
 
 ```powershell
 terraform fmt -recursive
 ```
 
-1. Review the execution plan:
+3. Review the execution plan:
 
 ```powershell
 terraform plan
@@ -61,13 +61,13 @@ terraform plan -out=tfplan
 terraform apply tfplan
 ```
 
-1. Apply the changes:
+4. Apply the changes:
 
 ```powershell
 terraform apply
 ```
 
-1. Push an image to the ECR repository (after apply):
+5. Push an image to the ECR repository (after apply):
 
 > [!IMPORTANT] [This](https://floci.io/floci/getting-started/quick-start/#step-5-optional-push-and-pull-a-container-image-to-emulated-ecr) is the standard way to upload Docker images in Floci ECR repositories.
 > In case of issues with the "localhost" resolution, use the alternative below. The AWS provider here is prepared for this option. See [here](https://floci.io/floci/services/ecr/#troubleshooting)
@@ -94,7 +94,7 @@ docker push localhost:5100/000000000000/eu-west-1/app-images:latest
 powershell -ExecutionPolicy Bypass -File .\scripts\push-ecr-image.ps1
 ```
 
-1. Destroy the resources when you are done:
+6. Destroy the resources when you are done:
 
 ```powershell
 terraform destroy
