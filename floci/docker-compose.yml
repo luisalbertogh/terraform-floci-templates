@@ -12,4 +12,6 @@ services:
       FLOCI_DEFAULT_ACCOUNT_ID: "000000000000"
       FLOCI_STORAGE_MODE: hybrid                    # persists state across restarts
       FLOCI_SERVICES_LAMBDA_HOT_RELOAD_ENABLED: "true"
-      FLOCI_SERVICES_ECR_URI_STYLE: "path"
+
+      # This is a workaround for the fact that the AWS SDK v3 does not support path-style URIs for ECR, which LocalStack uses by default. Setting this environment variable forces the use of path-style URIs, allowing the AWS SDK to interact with ECR in LocalStack correctly.
+      FLOCI_SERVICES_ECR_URI_STYLE: "path"         # use path-style URIs for ECR (e.g., localhost:4566/000000000000/my-repo)

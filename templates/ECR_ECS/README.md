@@ -69,6 +69,9 @@ terraform apply
 
 1. Push an image to the ECR repository (after apply):
 
+> [!IMPORTANT] [This](https://floci.io/floci/getting-started/quick-start/#step-5-optional-push-and-pull-a-container-image-to-emulated-ecr) is the standard way to upload Docker images in Floci ECR repositories.
+> In case of issues with the "localhost" resolution, use the alternative below. The AWS provider here is prepared for this option. See [here](https://floci.io/floci/services/ecr/#troubleshooting)
+
 Build the image locally:
 
 ```bash
@@ -85,6 +88,10 @@ aws ecr get-login-password --endpoint-url http://localhost:4566 | docker login -
 docker tag myimage:latest localhost:5100/000000000000/eu-west-1/app-images:latest
 
 docker push localhost:5100/000000000000/eu-west-1/app-images:latest
+
+# Optional: use the helper script to resolve repository URI automatically,
+# then login, tag, push, and verify in one step
+powershell -ExecutionPolicy Bypass -File .\scripts\push-ecr-image.ps1
 ```
 
 1. Destroy the resources when you are done:
