@@ -1,0 +1,109 @@
+"""
+Component Diagram — ECR + ECS Fargate
+Shows the Terraform modules and their relationships.
+"""
+
+direction: right
+
+# ── Terraform modules ─────────────────────────────────────────────────────────
+
+ecr_module: {
+    label: Module: ecr
+    icon: ../icons/aws/ecr_registry.svg
+    style: { font-size: 45 }
+
+    repo: {
+        shape: image
+        icon: ../icons/aws/ecr.svg
+        label: aws_ecr_repository
+        style: { font-size: 25 }
+    }
+}
+
+iam_module: {
+    label: Module: iam
+    icon: ../icons/aws/iam_role.svg
+    style: { font-size: 45 }
+
+    exec_role: {
+        shape: image
+        icon: ../icons/aws/iam_role.svg
+        label: Execution Role\n(pull image + write logs)
+        style: { font-size: 25 }
+    }
+
+    task_role: {
+        shape: image
+        icon: ../icons/aws/iam_role.svg
+        label: Task Role\n(container permissions)
+        style: { font-size: 25 }
+    }
+}
+
+log_module: {
+    label: Module: log_group
+    icon: ../icons/aws/cloud_watch.svg
+    style: { font-size: 45 }
+
+    log_group: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Log Group\n/ecs/<cluster>
+        style: { font-size: 25 }
+    }
+}
+
+ecs_module: {
+    label: Module: ecs
+    icon: ../icons/aws/ecs.svg
+    style: { font-size: 45 }
+
+    cluster: {
+        shape: image
+        icon: ../icons/aws/ecs_icon.svg
+        label: ECS Cluster
+        style: { font-size: 25 }
+    }
+
+    task_def: {
+        shape: image
+        icon: ../icons/aws/ecs_task.svg
+        label: Task Definition\n(Fargate / awsvpc)
+        style: { font-size: 25 }
+    }
+
+    service: {
+        shape: image
+        icon: ../icons/aws/ecs_service.svg
+        label: ECS Service
+        style: { font-size: 25 }
+    }
+}
+
+# ── Internal module wiring ────────────────────────────────────────────────────
+
+ecs_module.cluster -> ecs_module.task_def: defines {
+    style: { font-size: 35 }
+}
+
+ecs_module.task_def -> ecs_module.service: runs {
+    style: { font-size: 35 }
+}
+
+# ── Cross-module dependencies ─────────────────────────────────────────────────
+
+ecr_module.repo -> ecs_module.task_def: repository_url {
+    style: { font-size: 35 }
+}
+
+iam_module.exec_role -> ecs_module.task_def: execution_role_arn {
+    style: { font-size: 35 }
+}
+
+iam_module.task_role -> ecs_module.task_def: task_role_arn {
+    style: { font-size: 35 }
+}
+
+log_module.log_group -> ecs_module.task_def: log_group_name {
+    style: { font-size: 35 }
+}

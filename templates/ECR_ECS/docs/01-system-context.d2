@@ -1,0 +1,80 @@
+"""
+System Context Diagram — ECR + ECS Fargate
+Shows the system boundary and external actors interacting with the stack.
+"""
+
+direction: right
+
+# ── External actors ──────────────────────────────────────────────────────────
+
+developer: {
+    shape: image
+    icon: ../icons/others/user.svg
+    label: Developer
+    style: { font-size: 30 }
+}
+
+ci_cd: {
+    shape: image
+    icon: ../icons/others/github.svg
+    label: CI/CD Pipeline
+    style: { font-size: 30 }
+}
+
+end_user: {
+    shape: image
+    icon: ../icons/others/client.svg
+    label: End User
+    style: { font-size: 30 }
+}
+
+# ── System boundary ───────────────────────────────────────────────────────────
+
+aws: {
+    label: AWS Account
+    icon: ../icons/aws/aws_icon.svg
+    style: { font-size: 55 }
+
+    ecr: {
+        shape: image
+        icon: ../icons/aws/ecr_registry.svg
+        label: ECR Repository
+        style: { font-size: 30 }
+    }
+
+    ecs: {
+        shape: image
+        icon: ../icons/aws/ecs.svg
+        label: ECS Fargate Service
+        style: { font-size: 30 }
+    }
+
+    cw: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Logs
+        style: { font-size: 30 }
+    }
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+developer -> aws.ecr: push image {
+    style: { font-size: 35 }
+}
+
+ci_cd -> aws.ecr: build & push image {
+    style: { font-size: 35 }
+}
+
+aws.ecr -> aws.ecs: pull image on deploy {
+    style: { font-size: 35 }
+}
+
+aws.ecs -> aws.cw: write container logs {
+    style: { font-size: 35 }
+}
+
+end_user -> aws.ecs: HTTP request {
+    style: { font-size: 35 }
+}

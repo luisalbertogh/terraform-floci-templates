@@ -1,0 +1,49 @@
+"""
+Sequence Diagram — ECS Task Launch Workflow
+Shows the interaction sequence when ECS starts a new Fargate task.
+"""
+
+shape: sequence_diagram
+
+# ── Participants ──────────────────────────────────────────────────────────────
+
+developer: {
+    label: Developer
+}
+
+ecr_repo: {
+    label: ECR Repository
+}
+
+ecs_svc: {
+    label: ECS Service
+}
+
+fargate: {
+    label: Fargate Runtime
+}
+
+exec_role: {
+    label: Execution Role (IAM)
+}
+
+cw: {
+    label: CloudWatch Logs
+}
+
+# ── Sequence ──────────────────────────────────────────────────────────────────
+
+developer -> ecr_repo: docker push app-images:latest
+ecr_repo -> developer: 200 OK — image stored
+
+developer -> ecs_svc: terraform apply / update service
+ecs_svc -> fargate: schedule new task (desired_count)
+
+fargate -> exec_role: assume execution role (sts:AssumeRole)
+exec_role -> fargate: temporary credentials
+
+fargate -> ecr_repo: pull image (ecr:GetAuthorizationToken + BatchGetImage)
+ecr_repo -> fargate: image layers
+
+fargate -> fargate: start container (entrypoint)
+fargate -> cw: create log stream, push stdout/stderr

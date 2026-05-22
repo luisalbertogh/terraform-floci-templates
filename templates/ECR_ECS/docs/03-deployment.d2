@@ -1,0 +1,99 @@
+"""
+Deployment Diagram — ECR + ECS Fargate
+Shows the physical/logical AWS resource layout within the region and VPC boundary.
+"""
+
+direction: down
+
+# ── AWS Region ────────────────────────────────────────────────────────────────
+
+region: {
+    label: AWS Region (eu-west-1)
+    icon: ../icons/aws/aws_region.svg
+    style: { font-size: 55 }
+
+    # ── ECR (regional, outside VPC) ─────────────────────────────────────────
+
+    ecr: {
+        shape: image
+        icon: ../icons/aws/ecr_registry.svg
+        label: ECR Repository\napp-images
+        style: { font-size: 35 }
+    }
+
+    # ── IAM (global, shown in region for clarity) ────────────────────────────
+
+    iam: {
+        label: IAM
+        icon: ../icons/aws/iam_role.svg
+        style: { font-size: 45 }
+
+        exec_role: {
+            shape: image
+            icon: ../icons/aws/iam_role.svg
+            label: ecsTaskExecutionRole
+            style: { font-size: 25 }
+        }
+
+        task_role: {
+            shape: image
+            icon: ../icons/aws/iam_role.svg
+            label: ecsTaskRole
+            style: { font-size: 25 }
+        }
+    }
+
+    # ── VPC / Subnet boundary ────────────────────────────────────────────────
+
+    vpc: {
+        label: VPC
+        icon: ../icons/aws/vpc.svg
+        style: { font-size: 50 }
+
+        subnet: {
+            label: Subnet (public)
+            icon: ../icons/aws/public_subnet.svg
+            style: { font-size: 40 }
+
+            ecs_cluster: {
+                label: ECS Cluster — app-cluster
+                icon: ../icons/aws/ecs_icon.svg
+                style: { font-size: 35 }
+
+                fargate_task: {
+                    shape: image
+                    icon: ../icons/aws/ecs_container.svg
+                    label: Fargate Task\n(container: app)
+                    style: { font-size: 25 }
+                }
+            }
+        }
+    }
+
+    # ── CloudWatch ───────────────────────────────────────────────────────────
+
+    cw: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Logs\n/ecs/app-cluster
+        style: { font-size: 35 }
+    }
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+region.ecr -> region.vpc.subnet.ecs_cluster.fargate_task: pull image {
+    style: { font-size: 35 }
+}
+
+region.iam.exec_role -> region.vpc.subnet.ecs_cluster.fargate_task: assumed at start {
+    style: { font-size: 35 }
+}
+
+region.iam.task_role -> region.vpc.subnet.ecs_cluster.fargate_task: assumed at runtime {
+    style: { font-size: 35 }
+}
+
+region.vpc.subnet.ecs_cluster.fargate_task -> region.cw: awslogs driver {
+    style: { font-size: 35 }
+}

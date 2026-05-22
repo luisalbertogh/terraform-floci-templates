@@ -1,0 +1,74 @@
+"""
+Data Flow Diagram — ECR + ECS Fargate
+Illustrates how the container image and runtime data move through the system.
+"""
+
+direction: right
+
+# ── Actors / sources ──────────────────────────────────────────────────────────
+
+developer: {
+    shape: image
+    icon: ../icons/others/user.svg
+    label: Developer /\nCI-CD Pipeline
+    style: { font-size: 30 }
+}
+
+end_user: {
+    shape: image
+    icon: ../icons/others/client.svg
+    label: End User
+    style: { font-size: 30 }
+}
+
+# ── Data stores and processors ────────────────────────────────────────────────
+
+ecr: {
+    shape: image
+    icon: ../icons/aws/ecr_registry.svg
+    label: ECR\napp-images
+    style: { font-size: 30 }
+}
+
+ecs_service: {
+    shape: image
+    icon: ../icons/aws/ecs_service.svg
+    label: ECS Service\napp-service
+    style: { font-size: 30 }
+}
+
+fargate_task: {
+    shape: image
+    icon: ../icons/aws/ecs_container.svg
+    label: Fargate Task\napp (container)
+    style: { font-size: 30 }
+}
+
+cw_logs: {
+    shape: image
+    icon: ../icons/aws/cloud_watch.svg
+    label: CloudWatch Logs\n/ecs/app-cluster
+    style: { font-size: 30 }
+}
+
+# ── Data flows ────────────────────────────────────────────────────────────────
+
+developer -> ecr: 1. docker push\ncontainer image {
+    style: { font-size: 35 }
+}
+
+ecr -> fargate_task: 2. image pull\n(execution role) {
+    style: { font-size: 35 }
+}
+
+ecs_service -> fargate_task: 3. start / restart\ntask {
+    style: { font-size: 35 }
+}
+
+end_user -> fargate_task: 4. HTTP request\n(containerPort) {
+    style: { font-size: 35 }
+}
+
+fargate_task -> cw_logs: 5. stdout / stderr\n(awslogs driver) {
+    style: { font-size: 35 }
+}
