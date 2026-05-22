@@ -12,10 +12,11 @@
   - [AWS Services Covered](#aws-services-covered)
   - [Prerequisites](#prerequisites)
   - [Step 1 — Create the Docker Compose file](#step-1--create-the-docker-compose-file)
-  - [Step 2 — Create the Terraform provider override](#step-2--create-the-terraform-provider-override)
-  - [Step 3 — Initialize Terraform](#step-3--initialize-terraform)
-  - [Step 4 — Plan and apply](#step-4--plan-and-apply)
-  - [Step 5 — Verify resources with the AWS CLI](#step-5--verify-resources-with-the-aws-cli)
+  - [Step 2 — Amend AWS CLI credentials](#step-2--amend-aws-cli-credentials)
+  - [Step 3 — Review the Terraform provider](#step-3--review-the-terraform-provider)
+  - [Step 4 — Initialize Terraform](#step-4--initialize-terraform)
+  - [Step 5 — Plan and apply](#step-5--plan-and-apply)
+  - [Step 6 — Verify resources with the AWS CLI](#step-6--verify-resources-with-the-aws-cli)
   - [Teardown](#teardown)
   - [Troubleshooting](#troubleshooting)
   - [How to use Floci with AWS CLI](#how-to-use-floci-with-aws-cli)
@@ -84,21 +85,70 @@ Invoke-RestMethod http://localhost:4566/_floci/health
 
 ---
 
-## Step 2 — Create the Terraform provider override
+## Step 2 — Amend AWS CLI credentials
 
-The existing `providers.tf` uses `profile = var.aws_profile`, which would try to load real AWS credentials. Create an override file that substitutes dummy credentials and redirects every service endpoint to Floci.
+Add a new `floci` profile under your `.aws/credentials`:
 
-Create `infra/provider_override.tf`:
+```toml
+[floci]
+aws_access_key_id = test
+aws_secret_access_key = test
+```
+
+And in `.aws/config` settings:
+
+```toml
+[profile floci]
+region = eu-west-1
+output = json
+endpoint_url = http://localhost:4566
+services = floci-services
+
+[services floci-services]
+sts =
+  endpoint_url = http://localhost:4566
+```
+
+Then run your AWS CLI commands as usual, but selecting the **floci** profile:
+
+```shell
+aws s3 ls --profile floci
+```
+
+```shell
+$ aws sts get-caller-identity --profile floci
+{
+    "UserId": "000000000000",
+    "Account": "000000000000",
+    "Arn": "arn:aws:iam::000000000000:root"
+}
+```
+
+**Optionally**, set the environment variables using the CMD or Shel scripts under `floci/`:
+
+```shell
+call set-env.cmd
+```
+
+> [!NOTE]
+> Set `AWS_PROFILE=floci` as an environment variable to skip the profile flag.
+
+The `endpoint_url` and `services` options are needed only for the `AWS Toolkit integration` in `VSCode`.
+
+---
+
+## Step 3 — Review the Terraform provider
+
+The existing `providers.tf` uses `profile = var.aws_profile`, which would try to load real AWS credentials. Review the configuration and amend the value to point to your `Floci` profile.
+
+Review `infra/provider.tf`:
 
 ```hcl
-# infra/provider_override.tf
-# Local-only override — already excluded by .gitignore (*_override.tf).
-# Do NOT commit this file.
+# infra/providers.tf
 
 provider "aws" {
   region     = "eu-west-1"
-  access_key = "test"
-  secret_key = "test"
+  profile    = "floci"
 
   skip_credentials_validation = true
   skip_metadata_api_check     = true
@@ -117,11 +167,11 @@ provider "aws" {
 }
 ```
 
-Terraform merges `*_override.tf` files with matching blocks in the main configuration. The `access_key` / `secret_key` here replace the profile-based auth, and the `endpoints` block redirects all API calls to Floci. The file is already excluded from version control by the existing `.gitignore` rule `*_override.tf`.
+> [!IMPORTANT] Review the value of the `profile` setting. If you are using the `default` AWS CLI profile for Floci, comment it out or remove it. If you are using a specific **AWS profile for Floci**, override the value.
 
 ---
 
-## Step 3 — Initialize Terraform
+## Step 4 — Initialize Terraform
 
 Move into the `infra/` directory and initialise:
 
@@ -134,7 +184,7 @@ Because `backend "local" {}` is configured, state is stored in `infra/terraform.
 
 ---
 
-## Step 4 — Plan and apply
+## Step 5 — Plan and apply
 
 ```powershell
 terraform plan
@@ -158,7 +208,7 @@ terraform apply -auto-approve `
 
 ---
 
-## Step 5 — Verify resources with the AWS CLI
+## Step 6 — Verify resources with the AWS CLI
 
 Point the CLI at Floci by setting the endpoint URL:
 

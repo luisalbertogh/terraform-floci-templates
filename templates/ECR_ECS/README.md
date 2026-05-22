@@ -128,13 +128,13 @@ terraform destroy
 List ECR repositories:
 
 ```bash
-aws --endpoint-url http://localhost:4566 ecr describe-repositories --region eu-west-1 --profile floci
+aws --endpoint-url http://localhost:4566 ecr describe-repositories --region eu-west-1
 ```
 
 List ECS clusters:
 
 ```bash
-aws --endpoint-url http://localhost:4566 ecs list-clusters --region eu-west-1 --profile floci
+aws --endpoint-url http://localhost:4566 ecs list-clusters --region eu-west-1
 ```
 
 Describe the ECS service:
@@ -142,7 +142,7 @@ Describe the ECS service:
 ```bash
 aws --endpoint-url http://localhost:4566 ecs describe-services \
   --cluster app-cluster --services app-service \
-  --region eu-west-1 --profile floci
+  --region eu-west-1
 ```
 
 List running tasks:
