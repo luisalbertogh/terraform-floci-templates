@@ -69,18 +69,22 @@ terraform apply
 
 1. Push an image to the ECR repository (after apply):
 
+Build the image locally:
+
+```bash
+docker build . -t myimage:latest
+```
+
+Login and push to the ECR:
+
 ```bash
 # Authenticate Docker with the Floci ECR registry
-aws --endpoint-url http://localhost:4566 ecr get-login-password --region eu-west-1 --profile floci \
-  | docker login --username AWS --password-stdin \
-    000000000000.dkr.ecr.eu-west-1.localhost.localstack.cloud:4566
+aws ecr get-login-password --endpoint-url http://localhost:4566 | docker login --username AWS --password-stdin localhost:5100
 
-# Tag and push
-docker tag my-app:latest \
-  000000000000.dkr.ecr.eu-west-1.localhost.localstack.cloud:4566/app-images:latest
+# Tag and push. "app-images" is the repository name. "myimage" is the local image name
+docker tag myimage:latest localhost:5100/000000000000/eu-west-1/app-images:latest
 
-docker push \
-  000000000000.dkr.ecr.eu-west-1.localhost.localstack.cloud:4566/app-images:latest
+docker push localhost:5100/000000000000/eu-west-1/app-images:latest
 ```
 
 1. Destroy the resources when you are done:
