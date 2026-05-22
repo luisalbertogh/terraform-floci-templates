@@ -2,6 +2,8 @@
 
 Terraform sample projects for AWS on Floci, implementing baselines for common AWS architectures.
 
+> Also available in: [Español](./README.es.md)
+
 ## Templates
 
 - [Basic](./templates/Basic/) - Simple template with a CloudWatch log group. Use this template to start off a new project with the simplest structure.
