@@ -80,7 +80,7 @@ terraform test
 To invoke the API Gateway, use this command:
 
 ```bash
-curl http://localhost:4566/restapis/<api_gw_id>/<stage_name>/_user_request_/marks/get
+curl http://localhost:4566/restapis/<api_gw_id>/<stage_name>/_user_request_/<http_method>
 ```
 
 Invoke POST with a payload:
@@ -89,7 +89,13 @@ Invoke POST with a payload:
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"name":"Alice","mark":"9.5","class":"A"}' \
-  http://localhost:4566/restapis/<api_gw_id>/<stage_name>/_user_request_/marks/post
+  http://localhost:4566/restapis/123456/dev/_user_request_/marks/post
+```
+
+To retrieve the content of the DynamoDB table use:
+
+```bash
+aws dynamodb scan --table-name <table-name> --output json
 ```
 
 ## Troubleshooting

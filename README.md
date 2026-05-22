@@ -12,3 +12,7 @@ Terraform sample projects for AWS on Floci, implementing baselines for common AW
 ## How to use the templates
 
 [TODO]
+- Step-by-step process to use the templates
+- Docs for APIGW
+- Docs for ECR-ECS
+
