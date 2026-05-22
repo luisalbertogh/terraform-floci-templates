@@ -11,8 +11,12 @@ Terraform sample projects for AWS on Floci, implementing baselines for common AW
 
 ## How to use the templates
 
-[TODO]
-- Step-by-step process to use the templates
-- Docs for APIGW
-- Docs for ECR-ECS
+1. **Set AWS CLI credentials for Floci.** Configure the `floci` profile and endpoint settings as described in [floci/floci.md](./floci/floci.md).
+
+2. **Spin up Floci.** Use the Docker Compose file and helper scripts in the [floci/](./floci/) folder to start the local AWS emulator.
+
+3. **Use a template** from the [templates/](./templates/) folder:
+   - Navigate into the template directory (e.g. `cd templates/APIGW`).
+   - Read the `README.md` in that folder for template-specific details and variables.
+   - Run the standard Terraform workflow: `terraform init`, `terraform validate`, `terraform plan`, `terraform apply`.
 
