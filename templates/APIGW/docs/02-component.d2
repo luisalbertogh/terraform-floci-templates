@@ -1,0 +1,139 @@
+"""
+Component Diagram — API Gateway + Lambda + DynamoDB
+Shows all Terraform modules and root-level resources with their dependencies.
+"""
+
+direction: right
+
+# ── Terraform modules ─────────────────────────────────────────────────────────
+
+log_module: {
+    label: Module: log_group
+    icon: ../icons/aws/cloud_watch.svg
+    style: { font-size: 45 }
+
+    log_group: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Log Group\n/terraform-sandbox/demo-log-group
+        style: { font-size: 25 }
+    }
+}
+
+lambda_module: {
+    label: Module: lambda
+    icon: ../icons/aws/lambda.svg
+    style: { font-size: 45 }
+
+    function: {
+        shape: image
+        icon: ../icons/aws/lambda.svg
+        label: aws_lambda_function\nmark-management (Python 3.12)
+        style: { font-size: 25 }
+    }
+
+    role: {
+        shape: image
+        icon: ../icons/aws/iam_role.svg
+        label: aws_iam_role\nmark-management-role
+        style: { font-size: 25 }
+    }
+}
+
+apigw_module: {
+    label: Module: api_gateway
+    icon: ../icons/aws/api_gateway_red.svg
+    style: { font-size: 45 }
+
+    rest_api: {
+        shape: image
+        icon: ../icons/aws/api_gateway_red.svg
+        label: aws_api_gateway_rest_api\nmark-management-api
+        style: { font-size: 25 }
+    }
+
+    resources: {
+        shape: image
+        icon: ../icons/aws/api_gateway_red.svg
+        label: Resources\n/marks  /marks/get  /marks/post
+        style: { font-size: 25 }
+    }
+
+    stage: {
+        shape: image
+        icon: ../icons/aws/api_gateway_red.svg
+        label: Stage: dev
+        style: { font-size: 25 }
+    }
+
+    permission: {
+        shape: image
+        icon: ../icons/aws/iam_policies.svg
+        label: aws_lambda_permission\nAllowAPIGatewayInvoke
+        style: { font-size: 25 }
+    }
+}
+
+# ── Root-level resources ──────────────────────────────────────────────────────
+
+dynamodb_root: {
+    label: Root: DynamoDB
+    icon: ../icons/aws/dynamodb_table.svg
+    style: { font-size: 45 }
+
+    table: {
+        shape: image
+        icon: ../icons/aws/dynamodb_table.svg
+        label: aws_dynamodb_table\nmarks-table\n(Class PK + Name SK)
+        style: { font-size: 25 }
+    }
+}
+
+iam_root: {
+    label: Root: IAM Policy
+    icon: ../icons/aws/iam_policies.svg
+    style: { font-size: 45 }
+
+    policy: {
+        shape: image
+        icon: ../icons/aws/iam_policies.svg
+        label: aws_iam_role_policy\nScan + PutItem on marks-table
+        style: { font-size: 25 }
+    }
+}
+
+# ── Internal module wiring ────────────────────────────────────────────────────
+
+lambda_module.role -> lambda_module.function: attached to {
+    style: { font-size: 35 }
+}
+
+apigw_module.rest_api -> apigw_module.resources: owns {
+    style: { font-size: 35 }
+}
+
+apigw_module.resources -> apigw_module.stage: deployed via {
+    style: { font-size: 35 }
+}
+
+# ── Cross-module / root dependencies ─────────────────────────────────────────
+
+lambda_module.function -> apigw_module.rest_api: lambda_invoke_arn {
+    style: { font-size: 35 }
+}
+
+apigw_module.permission -> lambda_module.function: grants invoke to APIGW {
+    style: { font-size: 35 }
+}
+
+dynamodb_root.table -> iam_root.policy: resource ARN {
+    style: { font-size: 35 }
+}
+
+iam_root.policy -> lambda_module.role: attached inline {
+    style: { font-size: 35 }
+}
+
+dynamodb_root.table -> lambda_module.function: DYNAMODB_TABLE_NAME env var {
+    style: { font-size: 35 }
+}

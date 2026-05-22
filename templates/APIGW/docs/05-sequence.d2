@@ -1,0 +1,49 @@
+"""
+Sequence Diagram — GET and POST request workflows
+Shows the full interaction chain for both supported HTTP methods.
+"""
+
+shape: sequence_diagram
+
+# ── Participants ──────────────────────────────────────────────────────────────
+
+client: {
+    label: API Client
+}
+
+apigw: {
+    label: API Gateway\n(mark-management-api / dev)
+}
+
+lambda: {
+    label: Lambda\n(mark-management)
+}
+
+dynamodb: {
+    label: DynamoDB\n(marks-table)
+}
+
+cw: {
+    label: CloudWatch Logs
+}
+
+# ── GET flow ──────────────────────────────────────────────────────────────────
+
+client -> apigw: GET /marks/get
+apigw -> lambda: InvokeFunction (AWS_PROXY event, httpMethod=GET)
+lambda -> dynamodb: Scan (marks-table)
+dynamodb -> lambda: "Items: [...]" 
+lambda -> cw: log invocation result
+lambda -> apigw: "statusCode 200 — items array"
+apigw -> client: HTTP 200 items array
+
+# ── POST flow ─────────────────────────────────────────────────────────────────
+
+client -> apigw: "POST /marks/post body=(name, mark, class)"
+apigw -> lambda: "InvokeFunction AWS_PROXY event httpMethod=POST"
+lambda -> lambda: validate required fields
+lambda -> dynamodb: "PutItem (Class, Name, Mark)"
+dynamodb -> lambda: 200 OK
+lambda -> cw: log invocation result
+lambda -> apigw: "statusCode 201 — record inserted"
+apigw -> client: HTTP 201 record inserted

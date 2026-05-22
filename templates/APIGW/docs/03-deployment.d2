@@ -1,0 +1,95 @@
+"""
+Deployment Diagram — API Gateway + Lambda + DynamoDB
+Physical/logical AWS resource layout within the region.
+All services are regional and serverless — no VPC required.
+"""
+
+direction: down
+
+# ── AWS Region ────────────────────────────────────────────────────────────────
+
+region: {
+    label: AWS Region (us-east-1)
+    icon: ../icons/aws/aws_region.svg
+    style: { font-size: 55 }
+
+    # ── API Gateway (public regional endpoint) ────────────────────────────────
+
+    apigw: {
+        label: API Gateway
+        icon: ../icons/aws/api_gateway_red.svg
+        style: { font-size: 45 }
+
+        rest_api: {
+            shape: image
+            icon: ../icons/aws/api_gateway_red.svg
+            label: REST API\nmark-management-api
+            style: { font-size: 25 }
+        }
+
+        stage: {
+            shape: image
+            icon: ../icons/aws/api_gateway_red.svg
+            label: Stage: dev
+            style: { font-size: 25 }
+        }
+    }
+
+    # ── Lambda (serverless compute) ───────────────────────────────────────────
+
+    lambda: {
+        label: Lambda
+        icon: ../icons/aws/lambda.svg
+        style: { font-size: 45 }
+
+        function: {
+            shape: image
+            icon: ../icons/aws/lambda.svg
+            label: mark-management\n(Python 3.12)
+            style: { font-size: 25 }
+        }
+
+        exec_role: {
+            shape: image
+            icon: ../icons/aws/iam_role.svg
+            label: mark-management-role\n(AWSLambdaBasicExecutionRole\n+ DynamoDB inline policy)
+            style: { font-size: 25 }
+        }
+    }
+
+    # ── DynamoDB (serverless NoSQL) ───────────────────────────────────────────
+
+    dynamodb: {
+        shape: image
+        icon: ../icons/aws/dynamodb_table.svg
+        label: DynamoDB Table\nmarks-table\nPAY_PER_REQUEST
+        style: { font-size: 35 }
+    }
+
+    # ── CloudWatch Logs ───────────────────────────────────────────────────────
+
+    cw: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Logs\n/terraform-sandbox/demo-log-group
+        style: { font-size: 35 }
+    }
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+region.apigw.stage -> region.lambda.function: AWS_PROXY invoke {
+    style: { font-size: 35 }
+}
+
+region.lambda.exec_role -> region.lambda.function: assumed at invocation {
+    style: { font-size: 35 }
+}
+
+region.lambda.function -> region.dynamodb: Scan / PutItem {
+    style: { font-size: 35 }
+}
+
+region.lambda.function -> region.cw: structured logs {
+    style: { font-size: 35 }
+}

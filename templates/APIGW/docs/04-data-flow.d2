@@ -1,0 +1,85 @@
+"""
+Data Flow Diagram — API Gateway + Lambda + DynamoDB
+Illustrates the two primary request flows (GET and POST) and the log flow.
+"""
+
+direction: right
+
+# ── Actors ────────────────────────────────────────────────────────────────────
+
+client: {
+    shape: image
+    icon: ../icons/others/client.svg
+    label: API Client
+    style: { font-size: 30 }
+}
+
+# ── Processing nodes ──────────────────────────────────────────────────────────
+
+apigw: {
+    shape: image
+    icon: ../icons/aws/api_gateway_red.svg
+    label: API Gateway\nREST API / stage dev
+    style: { font-size: 30 }
+}
+
+lambda: {
+    shape: image
+    icon: ../icons/aws/lambda.svg
+    label: Lambda\nmark-management
+    style: { font-size: 30 }
+}
+
+# ── Data stores ───────────────────────────────────────────────────────────────
+
+dynamodb: {
+    shape: image
+    icon: ../icons/aws/dynamodb_table.svg
+    label: DynamoDB\nmarks-table
+    style: { font-size: 30 }
+}
+
+cw_logs: {
+    shape: image
+    icon: ../icons/aws/cloud_watch.svg
+    label: CloudWatch Logs
+    style: { font-size: 30 }
+}
+
+# ── Data flows ────────────────────────────────────────────────────────────────
+
+client -> apigw: 1a. GET /marks/get {
+    style: { font-size: 35 }
+}
+
+client -> apigw: "1b. POST /marks/post (name, mark, class)" {
+    style: { font-size: 35 }
+}
+
+apigw -> lambda: 2. AWS_PROXY event\n(httpMethod + body) {
+    style: { font-size: 35 }
+}
+
+lambda -> dynamodb: 3a. Scan (GET) {
+    style: { font-size: 35 }
+}
+
+lambda -> dynamodb: 3b. PutItem (POST) {
+    style: { font-size: 35 }
+}
+
+dynamodb -> lambda: 4. Items / confirmation {
+    style: { font-size: 35 }
+}
+
+lambda -> apigw: 5. HTTP response\n(statusCode + body) {
+    style: { font-size: 35 }
+}
+
+apigw -> client: 6. 200 / 201 / 4xx response {
+    style: { font-size: 35 }
+}
+
+lambda -> cw_logs: 7. Invocation logs\n(stdout / stderr) {
+    style: { font-size: 35 }
+}

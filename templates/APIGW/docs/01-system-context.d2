@@ -1,0 +1,80 @@
+"""
+System Context Diagram — API Gateway + Lambda + DynamoDB
+Shows the system boundary and external actors interacting with the marks management stack.
+"""
+
+direction: right
+
+# ── External actors ───────────────────────────────────────────────────────────
+
+api_client: {
+    shape: image
+    icon: ../icons/others/client.svg
+    label: API Client
+    style: { font-size: 30 }
+}
+
+developer: {
+    shape: image
+    icon: ../icons/others/user.svg
+    label: Developer /\nCI-CD Pipeline
+    style: { font-size: 30 }
+}
+
+# ── System boundary ───────────────────────────────────────────────────────────
+
+aws: {
+    label: AWS Account
+    icon: ../icons/aws/aws_icon.svg
+    style: { font-size: 55 }
+
+    apigw: {
+        shape: image
+        icon: ../icons/aws/api_gateway_red.svg
+        label: API Gateway\nREST API
+        style: { font-size: 30 }
+    }
+
+    lambda: {
+        shape: image
+        icon: ../icons/aws/lambda.svg
+        label: Lambda\nmark-management
+        style: { font-size: 30 }
+    }
+
+    dynamodb: {
+        shape: image
+        icon: ../icons/aws/dynamodb_table.svg
+        label: DynamoDB\nmarks-table
+        style: { font-size: 30 }
+    }
+
+    cw: {
+        shape: image
+        icon: ../icons/aws/cloud_watch.svg
+        label: CloudWatch Logs
+        style: { font-size: 30 }
+    }
+}
+
+# ── Connections ───────────────────────────────────────────────────────────────
+
+api_client -> aws.apigw: GET /marks/get\nPOST /marks/post {
+    style: { font-size: 35 }
+}
+
+aws.apigw -> aws.lambda: AWS_PROXY invoke {
+    style: { font-size: 35 }
+}
+
+aws.lambda -> aws.dynamodb: Scan / PutItem {
+    style: { font-size: 35 }
+}
+
+aws.lambda -> aws.cw: stdout / stderr {
+    style: { font-size: 35 }
+}
+
+developer -> aws.apigw: terraform apply\n(deploy) {
+    style: { font-size: 35 }
+}
