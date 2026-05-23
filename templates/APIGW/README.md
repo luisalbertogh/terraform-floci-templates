@@ -77,13 +77,36 @@ terraform init
 terraform test
 ```
 
+> [!NOTE]
+> Get the API Gateway ID with the command `terraform output --json`:
+>
+>```powershell
+> $ terraform output --json
+> {
+>  "api_get_invoke_url": {
+>    "sensitive": false,
+>    "type": "string",
+>    "value": "https://a32f25aef9.execute-api.eu-west-1.amazonaws.com/dev/marks/get"
+>  },
+> ...
+> }
+> ```
+
 To invoke the API Gateway, use this command:
 
 ```bash
 curl http://localhost:4566/restapis/<api_gw_id>/<stage_name>/_user_request_/<http_method>
 ```
 
-Invoke POST with a payload:
+Invoke GET method to retrieve the table content (replace `123456` with the API Gateway ID):
+
+```bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  http://localhost:4566/restapis/123456/dev/_user_request_/marks/get
+```
+
+Invoke POST with a payload (replace `123456` with the API Gateway ID):
 
 ```bash
 curl -X POST \

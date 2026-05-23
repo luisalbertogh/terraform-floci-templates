@@ -22,3 +22,5 @@ Terraform sample projects for AWS on Floci, implementing baselines for common AW
    - Read the `README.md` in that folder for template-specific details and variables.
    - Run the standard Terraform workflow: `terraform init`, `terraform validate`, `terraform plan`, `terraform apply`.
 
+4. **Retrieve created resources** Use the AWS CLI to get information about the deployed resources. It is also possible to get details of the deployed Terraform resources by running the command `terraform output --json`.
+

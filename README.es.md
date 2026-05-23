@@ -2,6 +2,8 @@
 
 Proyectos de ejemplo con Terraform para AWS sobre Floci, implementando bases de referencia para arquitecturas AWS comunes.
 
+> También disponible en: [English](./README.md)
+
 ## Plantillas
 
 - [Basic](./templates/Basic/) - Plantilla sencilla con un grupo de logs de CloudWatch. Úsala para iniciar un nuevo proyecto con la estructura más simple.
@@ -19,3 +21,5 @@ Proyectos de ejemplo con Terraform para AWS sobre Floci, implementando bases de 
    - Accede al directorio de la plantilla (p. ej. `cd templates/APIGW`).
    - Lee el archivo `README.md` de esa carpeta para conocer los detalles y variables específicos.
    - Ejecuta el flujo estándar de Terraform: `terraform init`, `terraform validate`, `terraform plan`, `terraform apply`.
+
+4. **Recupera los recursos creados.** Usa AWS CLI para obtener información sobre los recursos desplegados. También puedes obtener detalles de los recursos de Terraform desplegados ejecutando el comando `terraform output --json`.
